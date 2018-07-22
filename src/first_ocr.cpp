@@ -34,8 +34,12 @@ int main(){
 	
 	knn->train(train_data, ROW_SAMPLE, train_classes);	
 
-	set_test_data("./English/Fnt/Sample010/img010-00888.png");
-	
+	//set_test_data("./English/Fnt/Sample010/img010-00888.png");
+	test_data = imread("./chepai2.jpg", 0);
+	threshold(test_data, test_data, 100, 255, THRESH_BINARY);
+	test_data = test_data < 100;
+	resize(test_data, test_data,Size(128, 128), 0, 0, INTER_LINEAR);
+	test_data.convertTo(test_data, CV_32F);
 	test_data = test_data.reshape(0, 1);
 
 	auto r = knn->findNearest(test_data, K, noArray());
