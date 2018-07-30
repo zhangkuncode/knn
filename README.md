@@ -1,11 +1,7 @@
-# 印刷体识别
+# KNN
 
-## first_ocr.cpp
-印刷体数字识别
+## printed digit recognition
 
-## test
-测试目录
-
-## 版本
+## version
 opencv 3.2.0
 
