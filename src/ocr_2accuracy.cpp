@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
@@ -11,16 +12,16 @@ using namespace std;
 using namespace cv;
 using namespace ml;
 
-int samples = 100;
+int samples = 300;
 int classes = 10;
-char file_path[255] = "./English/Fnt/Sample0";
-static const int K = 3;
+char file_path[255] = "../English/Fnt/Sample0";
+char file_path2[225] = "img0";
+char file_path3[225] = "-0";
+static const int K = 23;
 Mat train_data;
 Mat train_classes;
-Mat test_data;
 
 void get_train_data();
-void set_test_data(const char* c);
 
 int main(){	
     Ptr<KNearest> knn = KNearest::create();
@@ -34,26 +35,33 @@ int main(){
 	
 	knn->train(train_data, ROW_SAMPLE, train_classes);	
 
-	//set_test_data("./English/Fnt/Sample010/img010-00888.png");
-	test_data = imread("./chepai2.jpg", 0);
-	threshold(test_data, test_data, 100, 255, THRESH_BINARY);
-	test_data = test_data < 100;
-	resize(test_data, test_data,Size(128, 128), 0, 0, INTER_LINEAR);
-	test_data.convertTo(test_data, CV_32F);
-	test_data = test_data.reshape(0, 1);
+	int error = 0;
+	char path[255] = "./my_led";
+	char file[255];
+	for(int i = 0; i < 10; ++i){
+		sprintf(file, "%s/%d1.jpg", path, i);
+		Mat src = imread(file, 0);
+		src = src.reshape(0, 1);
+		src.convertTo(src, CV_32F);
+		Mat mytest;
+		mytest.push_back(src);
+		auto r = knn->findNearest(mytest, K, noArray());
+		if(r != i){
+			cout << i << " -> " << r  << endl;
+			error++;
+		}else{
+			cout << i << " is ok" << endl;
+		}
+	}
 
-	auto r = knn->findNearest(test_data, K, noArray());
+	cout << "error: " << error << endl;
 	
-	cout<<"result: "<< r <<endl;
 	return 0;
 }
 
 void get_train_data(){
 	int i = 0, j = 0;
 	char file[255];
-	char file_path2[225] = "img0";
-	char file_path3[225] = "-0";
-
 	for(i = 1; i <= classes; ++i){
 		for(j = 1; j <= samples; ++j){
 			if(i < 10){
@@ -97,15 +105,4 @@ void get_train_data(){
 			train_data.push_back(src);
 		}
 	}
-}
-
-void set_test_data(const char* c){
-	Mat temp = imread(c, 0);
-	if(!temp.data){
-		perror("read test_image failed\n");
-	}
-		
-	temp = temp.reshape(0, 1);
-	test_data.push_back(temp);	
-	test_data.convertTo(test_data, CV_32F);
 }
