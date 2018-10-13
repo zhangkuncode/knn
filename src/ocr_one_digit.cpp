@@ -13,7 +13,7 @@ using namespace ml;
 
 int samples = 100;
 int classes = 10;
-char file_path[255] = "../English/Fnt/Sample0";
+char file_path[255] = "../train_data/Sample0";
 char file_path2[225] = "img0";
 char file_path3[225] = "-0";
 static const int K = 3;
