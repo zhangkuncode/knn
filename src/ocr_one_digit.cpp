@@ -13,7 +13,9 @@ using namespace ml;
 
 int samples = 100;
 int classes = 10;
-char file_path[255] = "./English/Fnt/Sample0";
+char file_path[255] = "../train_data/Sample0";
+char file_path2[225] = "img0";
+char file_path3[225] = "-0";
 static const int K = 3;
 Mat train_data;
 Mat train_classes;
@@ -21,6 +23,12 @@ Mat test_data;
 
 void get_train_data();
 void set_test_data(const char* c);
+void chepai();
+void led_digit(){
+	test_data = imread("./my_led/81.jpg", 0);
+	test_data = test_data.reshape(0, 1);
+	test_data.convertTo(test_data, CV_32F);
+}
 
 int main(){	
     Ptr<KNearest> knn = KNearest::create();
@@ -34,26 +42,24 @@ int main(){
 	
 	knn->train(train_data, ROW_SAMPLE, train_classes);	
 
-	//set_test_data("./English/Fnt/Sample010/img010-00888.png");
-	test_data = imread("./chepai2.jpg", 0);
-	threshold(test_data, test_data, 100, 255, THRESH_BINARY);
-	test_data = test_data < 100;
-	resize(test_data, test_data,Size(128, 128), 0, 0, INTER_LINEAR);
-	test_data.convertTo(test_data, CV_32F);
-	test_data = test_data.reshape(0, 1);
-
-	auto r = knn->findNearest(test_data, K, noArray());
-	
+//	set_test_data("./English/Fnt/Sample010/img010-00888.png");
+//	chepai();
+	led_digit();	
+	auto r = knn->findNearest(test_data, K, noArray());	
 	cout<<"result: "<< r <<endl;
 	return 0;
 }
 
+void chepai(){
+	test_data = imread("./my_led/01.jpg", 0);
+	test_data = test_data.reshape(0, 1);
+	test_data.convertTo(test_data, CV_32F);
+}
+
+
 void get_train_data(){
 	int i = 0, j = 0;
 	char file[255];
-	char file_path2[225] = "img0";
-	char file_path3[225] = "-0";
-
 	for(i = 1; i <= classes; ++i){
 		for(j = 1; j <= samples; ++j){
 			if(i < 10){
