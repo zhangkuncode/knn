@@ -1,7 +1,9 @@
-# KNN
+this is a try for knn, also is the first try for machine learning
 
-## data is printed digit
+knn1\knn2 their datas are different 
 
-## version
-opencv 3.2.0
+knn1's data is from damiles, ten digits
 
+knn2's data is printed, includes ten digits & 26 uppercase alphabets&  26 lowwercase alphabets
+
+version is  opencv3.2.0  &  C++
